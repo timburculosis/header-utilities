@@ -1,11 +1,12 @@
 #ifndef NJOY_HEADER_UTILITIES
 #define NJOY_HEADER_UTILITIES
 
+#include <iterator>
 #include <memory>
 #include <type_traits>
 
 namespace njoy{
-namespace utilities{
+namespace utility{
 
 /**
  * @brief 

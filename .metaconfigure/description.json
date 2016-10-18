@@ -1,5 +1,5 @@
 {
-"include_path": "src",
+"language_revision": "C++14",
 "unit_tests": {
 "header-utilities": [
 "src/header-utilities/test/copy.test.cpp",
@@ -14,14 +14,14 @@
 "src/header-utilities/test/utility.test.cpp"
 ]
 },
-"is_external_project": false,
+"include_path": "src",
+"target": "include",
+"version": "0.0.1",
+"language": "c++",
+"implementation_files": [],
+"name": "header-utilities",
 "header_files": [
 "src/header-utilities.hpp"
 ],
-"language": "c++",
-"version": "0.0.1",
-"implementation_files": [],
-"target": "include",
-"language_revision": "C++14",
-"name": "header-utilities"
+"is_external_project": false
 }

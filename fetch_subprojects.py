@@ -20,7 +20,7 @@ def clone_submodule( relative_path ):
   print("Fetching " + relative_path + "...")
   print("----------------------------------------")
   print("")
-  invocation = [ "git", "submodule", "update", "-q","--init", "--", relative_path ]
+  invocation = [ "git", "submodule", "update", "-q", "--init", "--", relative_path ]
   if os.name == "nt":
     invocation.insert( 0, "powershell" )
   clone = subprocess.Popen( invocation )
@@ -48,7 +48,7 @@ def traverse_dependencies( destination, traversed ):
   os.chdir( dependency_directory() )
 
   for dependency in os.listdir(os.getcwd()) :
-    if os.path.isdir( dependency ) and not dependency in traversed :
+    if os.path.isdir( dependency ) and dependency not in traversed :
         traversed.add( dependency )
         clone_submodule( dependency )
         os.chdir( dependency )
@@ -57,8 +57,7 @@ def traverse_dependencies( destination, traversed ):
           os.symlink( os.getcwd(), os.path.join( destination, dependency ) )
         traverse_dependencies( destination, traversed )
         os.chdir( ".." )
-  os.chdir( os.path.join( "..", ".." ) )
-  print( os.getcwd() )
+  os.chdir( os.path.join( ".." ) )
 
 def collect_subprojects():
   destination = os.path.join( os.getcwd(), "subprojects" )

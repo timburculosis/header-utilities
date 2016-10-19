@@ -28,10 +28,9 @@ endif()
 
 project( header-utilities VERSION 0.0.1 LANGUAGES CXX )
 
+get_directory_property( is_subproject PARENT_DIRECTORY )
 if( NOT DEFINED is_subproject )
-    set( is_subproject )
     add_subdirectory( subprojects/catch-adapter )
-    unset( is_subproject )
 endif()
 
 if( NOT DEFINED is_subproject )

@@ -1,5 +1,15 @@
 {
+"implementation_files": [],
+"target": "include",
+"name": "header-utilities",
+"header_files": [
+"src/header-utilities.hpp"
+],
+"include_path": "src",
 "language_revision": "C++14",
+"language": "c++",
+"version": "0.0.1",
+"is_external_project": false,
 "unit_tests": {
 "header-utilities": [
 "src/header-utilities/test/copy.test.cpp",
@@ -13,15 +23,5 @@
 "src/header-utilities/test/iterator_category.test.cpp",
 "src/header-utilities/test/utility.test.cpp"
 ]
-},
-"include_path": "src",
-"target": "include",
-"version": "0.0.1",
-"language": "c++",
-"implementation_files": [],
-"name": "header-utilities",
-"header_files": [
-"src/header-utilities.hpp"
-],
-"is_external_project": false
+}
 }

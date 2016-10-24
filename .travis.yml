@@ -47,11 +47,6 @@ matrix:
       env:
         build_type=debug static_libraries=FALSE
         appended_flags="-fsanitize=address -fno-omit-frame-pointer "
-  #   - os: linux
-  #     compiler: clang
-  #     env:
-  #       build_type=debug static_libraries=TRUE
-  #       appended_flags="-fsanitize=memory -fPIE -fno-omit-frame-pointer "
     - os: linux
       compiler: clang
       env:

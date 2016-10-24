@@ -1,0 +1,29 @@
+{
+"language_revision": "C++14",
+"name": "header-utilities",
+"target": "include",
+"header_files": [
+"src/header-utilities.hpp"
+],
+"is_external_project": false,
+"implementation_files": [],
+"version": "0.0.1",
+"unit_tests": {
+"header-utilities": [
+"src/header-utilities/test/copy.test.cpp",
+"src/header-utilities/test/echoErroneousLine.test.cpp",
+"src/header-utilities/test/element_type.test.cpp",
+"src/header-utilities/test/is_container.test.cpp",
+"src/header-utilities/test/is_iterator.test.cpp",
+"src/header-utilities/test/is_shared_ptr.test.cpp",
+"src/header-utilities/test/is_smart_ptr.test.cpp",
+"src/header-utilities/test/is_unique_ptr.test.cpp",
+"src/header-utilities/test/iterator.test.cpp",
+"src/header-utilities/test/iterator_category.test.cpp",
+"src/header-utilities/test/slurpFileToMemory.test.cpp",
+"src/header-utilities/test/utility.test.cpp"
+]
+},
+"language": "c++",
+"include_path": "src"
+}

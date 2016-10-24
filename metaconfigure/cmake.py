@@ -330,7 +330,9 @@ def add_unit_tests( state ):
     return contents
 
 def generate():
+  description.root = os.getcwd()
   state = description.deserialize()
+  os.chdir( description.root )
   description.collect_subprojects( state )
   contents = "cmake_minimum_required( VERSION 3.2 ) \n"
   contents += fetch_subprojects( state )

@@ -1,9 +1,12 @@
 #ifndef NJOY_HEADER_UTILITIES
 #define NJOY_HEADER_UTILITIES
 
+#include <fstream>
 #include <iterator>
 #include <memory>
 #include <type_traits>
+
+#include "Log.hpp"
 
 namespace njoy{
 namespace utility{
@@ -106,16 +109,16 @@ T copy( const T& t ){ return t; }
 /**
  * @brief
  * Dumps a line of text to screen, followed by cursor indicating the source of 
- * the error
- */
+ * the error */
 template< typename Iterator >
 void echoErroneousLine( Iterator lineBegin, Iterator positionIterator,
 			const Iterator& end, long lineNumber ){
-  Log::info( "Error while parsing line {}\n", lineNumber );
   const auto lineEnd = std::find( positionIterator, end, '\n');
-  Log::info( "{}", std::string( lineBegin, lineEnd ) );
   const auto position = std::distance( lineBegin, positionIterator );
-  LOG(INFO) << "{}{}\n", std::string( position, '~' ), '^' );
+  Log::info( "Error while parsing line {}\n\n{}\n{}{}\n",
+	     lineNumber,
+	     std::string( lineBegin, lineEnd ),
+	     std::string( position, '~' ), '^' );
 }
 
 /** @brief Copies the contents of a file to a string */

@@ -8,7 +8,7 @@ std::stringstream ss;
 using namespace njoy::utility;
 
 SCENARIO("echoErroneousLine"){
-  Log::add_sink(ss);
+  njoy::Log::add_sink(ss);
   std::string buffer("the error is here -> \n pretty cool huh?");
   auto begin = buffer.begin();
   auto it = std::next( begin, 20 );
@@ -18,10 +18,11 @@ SCENARIO("echoErroneousLine"){
   echoErroneousLine( begin, it, end, lineNumber );
 
   std::string referenceMessage =
-    "Error while parsing line 10\n"
+    "[info] Error while parsing line 10\n"
     "\n"
     "the error is here -> \n"
-    "~~~~~~~~~~~~~~~~~~~~^\n";
+    "~~~~~~~~~~~~~~~~~~~~^\n"
+    "\n";
 
   REQUIRE( referenceMessage == ss.str() );
 }

@@ -1,12 +1,8 @@
 {
-"language_revision": "C++14",
-"name": "header-utilities",
 "target": "include",
-"header_files": [
-"src/header-utilities.hpp"
-],
-"is_external_project": false,
+"name": "header-utilities",
 "implementation_files": [],
+"language": "c++",
 "version": "0.0.1",
 "unit_tests": {
 "header-utilities": [
@@ -24,6 +20,10 @@
 "src/header-utilities/test/utility.test.cpp"
 ]
 },
-"language": "c++",
-"include_path": "src"
+"header_files": [
+"src/header-utilities.hpp"
+],
+"is_external_project": false,
+"include_path": "src",
+"language_revision": "C++14"
 }

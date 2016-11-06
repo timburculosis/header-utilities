@@ -1,13 +1,15 @@
 {
+"include_path": "src",
 "header_files": [
 "src/header-utilities.hpp"
 ],
+"version": "0.0.1",
 "is_external_project": false,
-"target": "include",
-"language_revision": "C++14",
-"name": "header-utilities",
-"include_path": "src",
 "implementation_files": [],
+"name": "header-utilities",
+"target": "include",
+"language": "c++",
+"language_revision": "C++14",
 "unit_tests": {
 "header-utilities": [
 "src/header-utilities/test/copy.test.cpp",
@@ -23,7 +25,5 @@
 "src/header-utilities/test/slurpFileToMemory.test.cpp",
 "src/header-utilities/test/utility.test.cpp"
 ]
-},
-"language": "c++",
-"version": "0.0.1"
+}
 }

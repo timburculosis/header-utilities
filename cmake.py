@@ -252,24 +252,24 @@ def lto_flags_expression(state):
 
     
 def target_flags_expression(state):
-    contents=""
-    template="\n${{{{${{{{PREFIX}}}}_{0}_flags}}}}"
-    common=template.format('common')
-    debug=template.format('DEBUG')
-    release=template.format('RELEASE')
+    contents = ""
+    template = "\n${{{{${{{{PREFIX}}}}_{0}_flags}}}}"
+    common = template.format('common')
+    debug = template.format('DEBUG')
+    release = template.format('RELEASE')
 
-    option_template="\n$<$<BOOL:${{{{{0}}}}}>:${{{{${{{{PREFIX}}}}_{0}_flags}}}}>"
-    strict=option_template.format('strict')
-    coverage=option_template.format('coverage')
-    profile_generate=option_template.format('profile_generate')
-    link_time_optimization=option_template.format('link_time_optimization')
-    profile_use=option_template.format('profile_use')
-    nonportable_optimization=option_template.format('nonportable_optimization')
-    static=option_template.format('static')
+    option_template = "\n$<$<BOOL:${{{{{0}}}}}>:${{{{${{{{PREFIX}}}}_{0}_flags}}}}>"
+    strict = option_template.format('strict')
+    coverage = option_template.format('coverage')
+    profile_generate = option_template.format('profile_generate')
+    link_time_optimization = option_template.format('link_time_optimization')
+    profile_use = option_template.format('profile_use')
+    nonportable_optimization = option_template.format('nonportable_optimization')
+    static = option_template.format('static')
 
-    subproject="\n$<$<BOOL:${{is_subproject}}>:${{${{PREFIX}}_subproject_flags}}>"
-    base_project="\n$<$<NOT:$<BOOL:${{is_subproject}}>>:${{${{PREFIX}}_base_project_flags}}>"
-    addition= common + strict + static + subproject + base_project \
+    subproject = "\n$<$<BOOL:${{is_subproject}}>:${{${{PREFIX}}_subproject_flags}}>"
+    base_project = "\n$<$<NOT:$<BOOL:${{is_subproject}}>>:${{${{PREFIX}}_base_project_flags}}>"
+    addition = common + strict + static + subproject + base_project \
                 + "\n$<$<CONFIG:DEBUG>:" + debug + ' ' + coverage + '>' \
                 + "\n$<$<CONFIG:RELEASE>:"\
                 + release + ' '\
@@ -289,13 +289,13 @@ def test_flags_expression(state):
     debug=template.format('DEBUG')
     release=template.format('RELEASE')
         
-    option_template="$<$<BOOL:${{{{{0}}}}}>:${{{{PREFIX}}}}_{0}_flags}}}}>\n"
+    option_template="\n$<$<BOOL:${{{{{0}}}}}>:${{{{${{{{PREFIX}}}}_{0}_flags}}}}>"
     strict=option_template.format('strict')
     link_time_optimization=option_template.format('link_time_optimization')
     nonportable_optimization=option_template.format('nonportable_optimization')
         
     addition= common + strict \
-                + "\n$<$<CONFIG:DEBUG>:\n" + debug + '>' \
+                + "$<$<CONFIG:DEBUG>:\n" + debug + '>' \
                 + "\n$<$<CONFIG:RELEASE>:\n" + release + link_time_optimization + nonportable_optimization + ">\n"
     contents += addition.format(language=language[state['language']], name=state['name'])
         
@@ -341,13 +341,13 @@ def collect_revision_info(state):
         WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
         OUTPUT_VARIABLE GIT_BRANCH
         OUTPUT_STRIP_TRAILING_WHITESPACE
-   )
+    )
     execute_process(
         COMMAND ${GIT_EXECUTABLE} rev-parse HEAD
         WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
         OUTPUT_VARIABLE GIT_HASH
         OUTPUT_STRIP_TRAILING_WHITESPACE
-   ) """)
+    ) """)
 
      
 def print_banner(state):
@@ -368,9 +368,9 @@ def link_dependencies(state):
     contents=''
     name=state['name']
     if len(state['subprojects']) > 0 :
-        contents += '\ntarget_link_libraries( {}'
+        contents += '\ntarget_link_libraries( {name}'
         for name, subproject in state['subprojects'].items():
-            contents += (' INTERFACE {}' if has_library(subproject) else ' PUBLIC {}').format(name)
+            contents += (' PUBLIC {}' if has_library(subproject) else ' INTERFACE {}').format(name)
 
         contents += ' )\n'
 
@@ -408,7 +408,7 @@ target_include_directories( {name} PUBLIC "${{CMAKE_Fortran_MODULE_DIRECTORY}}" 
 target_include_directories( {name} {policy} {include_path} )
         """
 
-    if has_library(state) or has_executable(state):
+    if has_library(state) or has_executable(state) or has_tests(state):
         contents += """
 set( PREFIX {name}_${{CMAKE_{language}_COMPILER_ID}}_${{CMAKE_SYSTEM_NAME}} )
         """
@@ -434,13 +434,13 @@ endif()
         """)
         
     return textwrap.dedent(contents.format(name=state['name'],
-                                             driver=(state['driver'] if 'driver' in state else ''),
-                                             language=language[state['language']],
-                                             policy=policy,
-                                             sources=sources,
-                                             compile_flags=compile_flags,
-                                             link_flags=link_flags,
-                                             include_path=state['include path'] if 'include path' in state else ''))
+                                           driver=(state['driver'] if 'driver' in state else ''),
+                                           language=language[state['language']],
+                                           policy=policy,
+                                           sources=sources,
+                                           compile_flags=compile_flags,
+                                           link_flags=link_flags,
+                                           include_path=state['include path'] if 'include path' in state else ''))
 
 
 def add_tests(state):
@@ -457,7 +457,7 @@ def add_tests(state):
                 if ( unit_tests )"""
                 for test_name, sources in state['tests'].items():
                     executable_name=test_name + '.test'
-                    directory=sources[0]
+                    directory=os.path.dirname(sources[0])
                     contents += """
                     add_subdirectory( {} )""".format(directory)
                     test_contents="""
@@ -480,8 +480,8 @@ endforeach()"""
                     test_contents += """
 add_test( NAME {test_name} COMMAND {executable_name} )"""
                     test_contents=textwrap.dedent(test_contents).format(executable_name=executable_name,
-                                                                           test_name=test_name,
-                                                                           expression=expression,
+                                                                        test_name=test_name,
+                                                                        expression=expression,
                                                                            name=name)
                     with open(os.path.join(directory, 'CMakeLists.txt'), 'w') as TestCMakeFile:
                         TestCMakeFile.write(test_contents)
@@ -501,8 +501,8 @@ add_test( NAME {test_name} COMMAND {executable_name} )"""
 
 
 def is_subdirectory(child, parent):
-    true_child=os.realpath(child)
-    true_parent=os.realpath(parent)
+    true_child=os.path.realpath(child)
+    true_parent=os.path.realpath(parent)
     while true_child:
         true_child=os.path.split(true_child)[0]
         if true_child == true_parent:
@@ -545,7 +545,6 @@ def install(state):
 
             contents += """
         install( DIRECTORY {include_path} DESTINATION include
-                 FILES_MATCHING REGEX "{regex}"
                  FILE_PERMISSIONS OWNER_READ OWNER_WRITE 
                                   GROUP_READ 
                                   WORLD_READ
@@ -555,6 +554,10 @@ def install(state):
             if "group id" in state:
                 contents += """
                 SETGID {gid}"""
+
+
+            contents +=     """
+                 FILES_MATCHING REGEX "{regex}" """
 
             contents += """ )
                 """

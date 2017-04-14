@@ -230,21 +230,23 @@ def define_compiler_flags(state):
 
 def lto_flags_expression(state):
     contents = ""
-    release = "${{${{PREFIX}}_RELEASE_flags}}".format(language=language[state['language']], name=state['name'])
+    release = "${{${{PREFIX}}_RELEASE_flags}};".format(language=language[state['language']], name=state['name'])
     link_time_optimization = "${{${{PREFIX}}_link_time_optimization_flags}}".format(language=language[state['language']], name=state['name'])
-    option_template = "$<$<BOOL:${{{{{0}}}}}>:${{{{${{{{PREFIX}}}}_{0}_flags}}}}>"
+    option_template = "$<$<BOOL:${{{{{0}}}}}>:${{{{${{{{PREFIX}}}}_{0}_flags}}}};>"
 
     profile_generate = option_template.format('profile_generate').format(language=language[state['language']], name=state['name'])
     profile_use = option_template.format('profile_use').format(language=language[state['language']], name=state['name'])
     nonportable_optimization = option_template.format('nonportable_optimization').format(language=language[state['language']], name=state['name'])
-    language_appended_flags = "$<$<BOOL:{0}_appended_flags>:${{{0}_appended_flags}}>".format(language[state['language']])
-    project_appended_flags = "$<$<BOOL:{0}_appended_flags>:${{{0}_appended_flags}}>".format(state['name'])
-    contents = "\"$<$<AND:$<CONFIG:RELEASE>,$<BOOL:${{link_time_optimization}}>>:{release}{link_time_optimization}{profile_generate}{profile_use}{nonportable_optimization}>{language_appended_flags}{project_appended_flags}\""
+    coverage = option_template.format('coverage').format(language=language[state['language']], name=state['name'])
+    language_appended_flags = "$<$<BOOL:{0}_appended_flags>:${{{0}_appended_flags}};>".format(language[state['language']])
+    project_appended_flags = "$<$<BOOL:{0}_appended_flags>:${{{0}_appended_flags}};>".format(state['name'])
+    contents = "\"$<$<AND:$<CONFIG:RELEASE>,$<BOOL:${{link_time_optimization}}>>:{release}{link_time_optimization}{profile_generate}{profile_use}{nonportable_optimization}>$<$<CONFIG:DEBUG>:{coverage}>{language_appended_flags}{project_appended_flags}\""
     contents = contents.format(release=release,
                                link_time_optimization=link_time_optimization,
                                profile_generate=profile_generate,
                                profile_use=profile_use,
                                nonportable_optimization=nonportable_optimization,
+                               coverage=coverage,
                                language_appended_flags=language_appended_flags,
                                project_appended_flags=project_appended_flags)
 
@@ -290,12 +292,13 @@ def test_flags_expression(state):
     release = template.format('RELEASE')
         
     option_template = "\n$<$<BOOL:${{{{{0}}}}}>:${{{{${{{{PREFIX}}}}_{0}_flags}}}}>"
+    coverage = option_template.format('coverage')
     strict = option_template.format('strict')
     link_time_optimization = option_template.format('link_time_optimization')
     nonportable_optimization = option_template.format('nonportable_optimization')
         
     addition = common + strict \
-                + "$<$<CONFIG:DEBUG>:\n" + debug + '>' \
+                + "$<$<CONFIG:DEBUG>:\n" + debug + coverage + '>' \
                 + "\n$<$<CONFIG:RELEASE>:\n" + release + link_time_optimization + nonportable_optimization + ">\n"
     contents += addition.format(language=language[state['language']], name=state['name'])
         
@@ -542,10 +545,10 @@ def install(state):
     if 'include path' in state and is_subdirectory(state['include path'], os.getcwd()):
         if 'header files' in state['file extension']:
             for extension in state['file extension']['header files']:
-                regex.append(".*\.{0}".format(extension))                
+                regex.append(".*\\.{0}$".format(extension).replace('+', '[+]'))
 
             contents += """
-        install( DIRECTORY {include_path} DESTINATION include
+        install( DIRECTORY {include_path}/ DESTINATION include
                  FILE_PERMISSIONS OWNER_READ OWNER_WRITE 
                                   GROUP_READ 
                                   WORLD_READ

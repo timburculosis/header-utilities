@@ -3,11 +3,6 @@ add_executable( header-utilities.test
                 copy.test.cpp
                 echoErroneousLine.test.cpp
                 element_type.test.cpp
-                is_container.test.cpp
-                is_iterator.test.cpp
-                is_shared_ptr.test.cpp
-                is_smart_ptr.test.cpp
-                is_unique_ptr.test.cpp
                 iterator.test.cpp
                 iterator_category.test.cpp
                 slurpFileToMemory.test.cpp

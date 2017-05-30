@@ -11,7 +11,8 @@ SCENARIO("Exponential Search implementation"){
   GIVEN("a random list"){
     std::minstd_rand0 generator( 3091988 );
     std::uniform_int_distribution<int> distribution(0,1000);
-    std::vector< int > instance; instance.reserve(100);
+    std::vector< int > instance;
+    instance.reserve(100);
     int j = 100;
     while( --j ){ instance.push_back( distribution( generator ) ); }
     auto value = instance.front();

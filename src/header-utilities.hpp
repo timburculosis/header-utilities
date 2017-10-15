@@ -12,25 +12,25 @@ namespace njoy{
 namespace utility{
 
 /**
- * @brief 
+ * @brief
  * A alias template used for as a template type parameter to enable SFINAE
  *
  * @details
  * The void_t template is useful for implementing the so-called detection
- * idiom to provide rudimentary compile-time reflection in C++. See the 
+ * idiom to provide rudimentary compile-time reflection in C++. See the
  * is_iterator template later in this library for a simple executable example,
  * of the use of this template in pratice.
  */
 template< class... >
 using void_t = void;
 
-/** 
- * @brief A generic function to call to a parameter types copy ctor 
+/**
+ * @brief A generic function to call to a parameter types copy ctor
  *
- * @details 
+ * @details
  * This function is convenient in conjunction with the idiom of always accepting
- * sink arguments by r-value reference (used throughout NJOY21 libraries). When 
- * passing an l-value to such a function, the user can opt to either explicitly 
+ * sink arguments by r-value reference (used throughout NJOY21 libraries). When
+ * passing an l-value to such a function, the user can opt to either explicitly
  * move (using std::move) or explicitly copy (using utility::copy) the l-value.
  */
 template< typename T >
@@ -40,10 +40,10 @@ T copy( const T& t ){ return t; }
 template< typename T >
 using element_type = typename std::decay_t<T>::element_type;
 
-/** 
- * @brief 
- * An alias to a parameter type's nested iterator_category alias 
- * (with special treament for pointers) 
+/**
+ * @brief
+ * An alias to a parameter type's nested iterator_category alias
+ * (with special treament for pointers)
  */
 template< typename T >
 using iterator_category =
@@ -58,6 +58,7 @@ using iterator = typename std::decay_t<T>::iterator;
 #include "header-utilities/is_iterator.hpp"
 #include "header-utilities/is_container.hpp"
 #include "header-utilities/exponentialSearch.hpp"
+#include "header-utilities/src/dereference.hpp"
 #include "header-utilities/src/echoErroneousLine.hpp"
 #include "header-utilities/src/slurpFileToMemory.hpp"
 

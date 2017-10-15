@@ -1,6 +1,7 @@
 
 add_executable( header-utilities.test
                 copy.test.cpp
+                dereference.test.cpp
                 echoErroneousLine.test.cpp
                 element_type.test.cpp
                 iterator.test.cpp

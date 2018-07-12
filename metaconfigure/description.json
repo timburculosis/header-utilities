@@ -372,6 +372,7 @@
     "src/header-utilities/is_iterator.hpp",
     "src/header-utilities/is_shared_ptr.hpp",
     "src/header-utilities/is_unique_ptr.hpp",
+    "src/header-utilities/Require.hpp",
     "src/header-utilities/src/dereference.hpp",
     "src/header-utilities/src/echoErroneousLine.hpp",
     "src/header-utilities/src/slurpFileToMemory.hpp"
@@ -402,6 +403,7 @@
       "src/header-utilities/test/slurpFileToMemory.test.cpp",
       "src/header-utilities/test/utility.test.cpp"
     ],
+    "header-utilities.Require": [],
     "header-utilities.exponentialSearch": [
       "src/header-utilities/exponentialSearch/test/exponentialSearch.test.cpp"
     ],

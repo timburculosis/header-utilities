@@ -3,7 +3,8 @@ import textwrap
 from . import description
 
 language = {'c' : 'C', 'c++' : 'CXX', 'fortran' : 'Fortran'}
-platform = {'linux':'Linux', 'osx':'Darwin', 'windows':'Windows'}
+platform = {'linux':'Linux', 'osx':'Darwin', 'windows':'Windows',
+            'cygwin':'CYGWIN', 'mingw':'MinGW'}
 vendor = {'gcc' : 'GNU',
           'g++' : 'GNU',
           'gfortran' : 'GNU',
@@ -18,11 +19,18 @@ def fetch_subprojects(state):
     if state['subprojects']:
         contents += textwrap.dedent(
         """
+        if ( NOT GIT_EXECUTABLE )
+            find_package( Git 2.1 )
+            if ( NOT GIT_FOUND )
+                message( FATAL_ERROR "git installation was not found." )
+            endif()
+        endif()
+
         if( NOT ROOT_DIRECTORY )
             set( ROOT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} )
             if ( NOT fetched_subprojects )
                 if ( NOT PYTHON_EXECUTABLE )
-                    find_package( PythonInterp )
+                    find_package( PythonInterp 3.4 )
                     if ( NOT PYTHONINTERP_FOUND )
                         message( FATAL_ERROR "Python interpeter installation was not found." )
                     endif()
@@ -132,7 +140,7 @@ def define_options(state):
     contents="""
 
     # general properties
-    option( strict "Compile time warnings are converted to errors" {strict} )
+    option( {name}_strict "Compile time warnings are converted to errors" {strict} )
     
     # binary instrumentation
     option( coverage "Enable binary instrumentation to collect test coverage information in the DEBUG configuration" )
@@ -191,7 +199,7 @@ def traverse_subprojects(state):
 def define_compiler_flags(state):
     contents="\n"
     for compiler in state['compiler'].keys():        
-        for operating_system in set(['linux','windows','osx']).intersection(state['compiler'][compiler].keys()):
+        for operating_system in set(['linux','windows','osx','cygwin','mingw']).intersection(state['compiler'][compiler].keys()):
             environment=state['compiler'][compiler][operating_system]
             flags=environment['flags']
             args ={ 'name' : state['name'],
@@ -261,7 +269,7 @@ def target_flags_expression(state):
     release = template.format('RELEASE')
 
     option_template = "\n$<$<BOOL:${{{{{0}}}}}>:${{{{${{{{PREFIX}}}}_{0}_flags}}}}>"
-    strict = option_template.format('strict')
+    strict = "\n$<$<BOOL:${{{{{0}}}}}>:${{{{${{{{PREFIX}}}}_strict_flags}}}}>".format('{name}_strict')
     coverage = option_template.format('coverage')
     profile_generate = option_template.format('profile_generate')
     link_time_optimization = option_template.format('link_time_optimization')
@@ -373,7 +381,7 @@ def link_dependencies(state):
     if len(state['subprojects']) > 0 :
         contents += '\ntarget_link_libraries( {name}'
         for name, subproject in state['subprojects'].items():
-            contents += (' PUBLIC {}' if has_library(subproject) else ' INTERFACE {}').format(name)
+            contents += (' PUBLIC {}' if has_library(state) else ' INTERFACE {}').format(name)
 
         contents += ' )\n'
 
@@ -432,7 +440,7 @@ target_link_libraries( {name} {policy} {link_flags} )
 if ( NOT is_subproject )
     add_executable( {name}_executable {driver} )
     set_target_properties( {name}_executable PROPERTIES OUTPUT_NAME {name} )
-    target_compile_options( {name}_executable PRIVATE {compile_flags} )
+    target_compile_options( {name}_executable PRIVATE {indented_compile_flags} )
     target_link_libraries( {name}_executable {policy} {name} )
 endif()
         """)
@@ -443,6 +451,7 @@ endif()
                                            policy=policy,
                                            sources=sources,
                                            compile_flags=compile_flags,
+                                           indented_compile_flags=compile_flags.replace('\n', '\n    '),
                                            link_flags=link_flags,
                                            include_path=state['include path'] if 'include path' in state else ''))
 
@@ -461,7 +470,12 @@ def add_tests(state):
                 if ( unit_tests )"""
                 for test_name, sources in state['tests'].items():
                     executable_name=test_name + '.test'
-                    directory=os.path.dirname(sources[0])
+                    try:
+                      directory=os.path.dirname(sources[0])
+                    except IndexError:
+                      print("Error while generating CMakeLists.txt for {}".format(executable_name))
+                      print("There seem to be no associated source files. Does this project use unusual file extensions?")
+                      raise
                     contents += """
                     add_subdirectory( {} )""".format(directory)
                     test_contents="""
@@ -525,9 +539,8 @@ def install(state):
         targets.append("{name}_executable".format(name=state['name']))
 
     if targets:
-        targets=' '.join(targets)
-        contents += """
-        install( TARGETS {targets} 
+        block = """
+        install( TARGETS ${{installation_targets}} 
                  RUNTIME DESTINATION bin
                  LIBRARY DESTINATION lib
                  ARCHIVE DESTINATION lib
@@ -535,11 +548,32 @@ def install(state):
                              GROUP_EXECUTE GROUP_READ 
                              WORLD_EXECUTE WORLD_READ"""
         if "group id" in state:
-            contents += """
+            block += """
                              SETGID {gid}"""
 
-        contents += """ )
+        block += """ )
         """
+        
+        if has_executable(state):
+            if len(targets) > 1:
+                contents += """
+        set( installation_targets {0} )""".format(targets[0])
+                contents += """
+        if ( NOT is_subproject )
+            list( APPEND installation_targets {0} )
+        endif()
+                """.format(targets[-1])
+                contents += block
+            else:
+                contents += """
+        if ( NOT is_subproject )
+            list( APPEND installation_targets {0} )"""
+                contents += block.replace('\n', '\n    ')
+                contents += """
+        endif()
+                """
+                
+
 
     regex=[]
     if 'include path' in state and is_subdirectory(state['include path'], os.getcwd()):
@@ -596,7 +630,11 @@ def install(state):
 def generate():
     state=description.deserialize()
     description.collect_subprojects(state, state['project path'])
-    contents = "cmake_minimum_required( VERSION 3.2 ) \n"
+    contents = \
+        """
+cmake_minimum_required( VERSION 3.2 ) 
+set( CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "Supported configuration types" FORCE )
+        """
     contents += fetch_subprojects(state)
     contents += project_statement(state)
     if not state['is external project']:
@@ -613,6 +651,9 @@ def generate():
         contents += add_targets(state)
         contents += add_tests(state) 
         contents += install(state)
+        contents += """
+                    INCLUDE(CPack)
+                    """
         
     with open('CMakeLists.txt', 'w') as CMakeFile:
         CMakeFile.write(contents)

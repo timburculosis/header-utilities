@@ -1,4 +1,5 @@
-template< template< typename> class Concept,
-          typename T,
-          bool TF >
-struct Require: std::enable_if_t< Concept< T >::value == TF, bool >;
+template< bool TF,
+          template< typename...> class Concept,
+          typename... T
+         >
+using Require = std::enable_if_t< Concept< T... >::value == TF, bool >;

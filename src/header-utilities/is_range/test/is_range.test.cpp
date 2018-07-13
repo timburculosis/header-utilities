@@ -8,8 +8,6 @@
 
 using namespace njoy::utility;
 
-template< typename T > struct echo;
-
 SCENARIO( "is_range" ){
 
   REQUIRE( is_range< std::vector< int    > >::value );

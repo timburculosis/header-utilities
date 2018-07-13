@@ -7,18 +7,28 @@
 
 using namespace njoy::utility;
 
+template< typename T, Require< true, std::is_integral, T > = true >
+bool integrality( const T& ){ return true; }
+
+template< typename T, Require< false, std::is_integral, T > = true >
+bool integrality( const T& ){ return false; }
+
+template< typename T, Require< true, std::is_object, T > = true >
+bool objected( const T& ){ return true; }
+
+template< typename T, Require< false, std::is_object, T > = true >
+bool objected( const T& ){ return false; }
+
 SCENARIO( "Require" ){
   GIVEN( "several container types" ){
-    double dRange[3];
 
-  auto rVec = Require< true, isRange, std::vector< int > > {};
-  auto rArr = Require< false, isRange, decltype( dRange ) > {};
-  auto d = Require< false, isRange, double > {};
-  CHECK( rVec );
-  CHECK( rArr );
-  CHECK( not d );
+    CHECK( integrality( 1 ) );
+    CHECK( not integrality( std::vector< int >{} ) );
+    CHECK( not integrality( 1.0 ) );
 
-  auto cVec = Require< true, is_container, std::vector< int > > {};
-  CHECK( cVec );
+    CHECK( objected( std::vector< int >{} ) );
+    CHECK( objected( 1 ) );
+    CHECK( objected( 1.0 ) );
+
   } // GIVEN
 } // SCENARIO

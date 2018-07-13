@@ -8,16 +8,16 @@
 
 using namespace njoy::utility;
 
+template< typename T > struct echo;
+
 SCENARIO( "is_range" ){
 
-  REQUIRE( isRange< std::vector< int    > >{} );
-  REQUIRE( isRange< std::vector< double > >{} );
-  REQUIRE( isRange< std::list<   int    > >{} );
-  REQUIRE( isRange< std::list<   double > >{} );
+  REQUIRE( is_range< std::vector< int    > >::value );
+  REQUIRE( is_range< std::vector< double > >{} );
+  REQUIRE( is_range< std::list<   int    > >{} );
+  REQUIRE( is_range< std::list<   double > >{} );
+  REQUIRE( is_range< double[ 3 ] >{} );
 
-  double a[3] = {};
-  REQUIRE( isRange< decltype( a ) >{} ); // This should be true
-
-  REQUIRE( not isRange< double >{} );
-  REQUIRE( not isRange< int >{} );
+  REQUIRE( not is_range< double >{} );
+  REQUIRE( not is_range< int >{} );
 } // SCENARIO

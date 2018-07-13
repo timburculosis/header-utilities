@@ -1,7 +1,7 @@
 sudo: required
 
 git:
-  submodules: false  
+  submodules: false
 
 addons:
   apt:

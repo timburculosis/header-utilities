@@ -370,8 +370,10 @@
     "src/header-utilities/exponentialSearch.hpp",
     "src/header-utilities/is_container.hpp",
     "src/header-utilities/is_iterator.hpp",
+    "src/header-utilities/is_range.hpp",
     "src/header-utilities/is_shared_ptr.hpp",
     "src/header-utilities/is_unique_ptr.hpp",
+    "src/header-utilities/Require.hpp",
     "src/header-utilities/src/dereference.hpp",
     "src/header-utilities/src/echoErroneousLine.hpp",
     "src/header-utilities/src/slurpFileToMemory.hpp"
@@ -402,6 +404,9 @@
       "src/header-utilities/test/slurpFileToMemory.test.cpp",
       "src/header-utilities/test/utility.test.cpp"
     ],
+    "header-utilities.Require": [
+      "src/header-utilities/Require/test/Require.test.cpp"
+    ],
     "header-utilities.exponentialSearch": [
       "src/header-utilities/exponentialSearch/test/exponentialSearch.test.cpp"
     ],
@@ -410,6 +415,9 @@
     ],
     "header-utilities.is_iterator": [
       "src/header-utilities/is_iterator/test/is_iterator.test.cpp"
+    ],
+    "header-utilities.is_range": [
+      "src/header-utilities/is_range/test/is_range.test.cpp"
     ],
     "header-utilities.is_shared_ptr": [
       "src/header-utilities/is_shared_ptr/test/is_shared_ptr.test.cpp"

@@ -374,6 +374,7 @@
     "src/header-utilities/is_shared_ptr.hpp",
     "src/header-utilities/is_unique_ptr.hpp",
     "src/header-utilities/Require.hpp",
+    "src/header-utilities/value_t.hpp",
     "src/header-utilities/src/dereference.hpp",
     "src/header-utilities/src/echoErroneousLine.hpp",
     "src/header-utilities/src/slurpFileToMemory.hpp"
@@ -402,7 +403,8 @@
       "src/header-utilities/test/iterator.test.cpp",
       "src/header-utilities/test/iterator_category.test.cpp",
       "src/header-utilities/test/slurpFileToMemory.test.cpp",
-      "src/header-utilities/test/utility.test.cpp"
+      "src/header-utilities/test/utility.test.cpp",
+      "src/header-utilities/test/value_t.test.cpp"
     ],
     "header-utilities.Require": [
       "src/header-utilities/Require/test/Require.test.cpp"
@@ -424,6 +426,9 @@
     ],
     "header-utilities.is_unique_ptr": [
       "src/header-utilities/is_unique_ptr/test/is_unique_ptr.test.cpp"
+    ],
+    "header-utilities.value_t": [
+      "src/header-utilities/value_t/test/value_t.test.cpp"
     ]
   },
   "update": true

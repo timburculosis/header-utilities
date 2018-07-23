@@ -59,6 +59,7 @@ using iterator = typename std::decay_t<T>::iterator;
 #include "header-utilities/is_container.hpp"
 #include "header-utilities/is_range.hpp"
 #include "header-utilities/Require.hpp"
+#include "header-utilities/value_t.hpp"
 #include "header-utilities/exponentialSearch.hpp"
 #include "header-utilities/src/dereference.hpp"
 #include "header-utilities/src/echoErroneousLine.hpp"

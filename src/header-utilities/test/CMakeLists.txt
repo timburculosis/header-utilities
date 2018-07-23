@@ -7,7 +7,8 @@ add_executable( header-utilities.test
                 iterator.test.cpp
                 iterator_category.test.cpp
                 slurpFileToMemory.test.cpp
-                utility.test.cpp )
+                utility.test.cpp
+                value_t.test.cpp )
 target_compile_options( header-utilities.test PRIVATE ${${PREFIX}_common_flags}
 $<$<BOOL:${strict}>:${${PREFIX}_strict_flags}>$<$<CONFIG:DEBUG>:
 ${${PREFIX}_DEBUG_flags}

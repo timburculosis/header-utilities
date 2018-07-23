@@ -403,8 +403,7 @@
       "src/header-utilities/test/iterator.test.cpp",
       "src/header-utilities/test/iterator_category.test.cpp",
       "src/header-utilities/test/slurpFileToMemory.test.cpp",
-      "src/header-utilities/test/utility.test.cpp",
-      "src/header-utilities/test/value_t.test.cpp"
+      "src/header-utilities/test/utility.test.cpp"
     ],
     "header-utilities.Require": [
       "src/header-utilities/Require/test/Require.test.cpp"

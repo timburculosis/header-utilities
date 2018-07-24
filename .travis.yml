@@ -35,21 +35,19 @@ env:
     secure: No/uhrPqPa23XVLGWiUTHmUYj2444hIg/mdGGVp99tptfod5ar+daiJGNnsw/3MiDztf6yaaqIoxSRE5j+u4v59GYdya/pwu5cNkENoVD5y01gayuWb28dIZIMOls7gGEYq46xGoD5uETPiiWve9E3zwqyqM3LmO0WOo2a0MXUW2bDe8NGRCk4Sy/7a7S1+1Y4J0ZqEcye3tpZqPHX6Kd9CVUmXUCncKBquV0ILFUX2XTOhQFrDYgpxdG3LT3NXxQJLgSkMcsH8q0WVaagofLoCOapOrUDNdJ8TswaPStEgp3KuIMFaMIl8F8M1pw/wPEslzwd79wS5WMkF4DChlwTdeCuKalRRtZ0uDSlgDIfRis4C4GLcLl9dY//x6cClyh458Lx60POEw8JVjcZAqYEDr3jZTUtgGhl/JiBYT7YsbjLb2WDFHLbRi7ZO3zuq+S6kaDekWk9T1C4qrcFg6lQ7Be0Mro0Zlal2Qf1l/IA59Q261G7xz0SQdh6vfYvQ+UXJAvtgd0rop3q5g/YYjfMAPPA1mU1Jqz4XWnVVsYSYGQzrGMzGUMb4mI9/lw3dvyGIKGwabRyNuE6J2/jtOXOARlVGEobyGpt8Ew3I7SGucTniy3jH1XB2m/b4glEgd9a8aRAr57oRYh0xOOPE/6Cjuhk2EB4wMpelaIu+wgdY=
 matrix:
   include:
-  - os: linux
-    compiler: gcc
-    env: build_type=coverage static_libraries=FALSE
-  - os: linux
-    compiler: clang
-    env: build_type=debug static_libraries=FALSE appended_flags="-fsanitize=address
-      -fno-omit-frame-pointer "
-  - os: linux
-    compiler: clang
-    env: build_type=debug static_libraries=TRUE appended_flags="-fsanitize=memory
-      -fPIE -fno-omit-frame-pointer "
-  - os: linux
-    compiler: clang
-    env: build_type=debug static_libraries=FALSE appended_flags="-fsanitize=undefined
-      -fsanitize=integer -fno-omit-frame-pointer "
+    - os: linux
+      compiler: gcc
+      env: build_type=coverage static_libraries=FALSE
+    - os: linux
+      compiler: clang
+      env:
+        build_type=debug static_libraries=FALSE
+        appended_flags="-fsanitize=address;-fno-omit-frame-pointer;"
+    - os: linux
+      compiler: clang
+      env:
+        build_type=debug static_libraries=FALSE
+        appended_flags="-fsanitize=undefined;-fno-omit-frame-pointer;"
   exclude:
-  - os: osx
-    compiler: gcc
+    - os: osx
+      compiler: gcc

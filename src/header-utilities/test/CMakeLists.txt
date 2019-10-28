@@ -1,13 +1,13 @@
 
 add_executable( header-utilities.test
-                copy.test.cpp
-                dereference.test.cpp
                 echoErroneousLine.test.cpp
+                copy.test.cpp
+                slurpFileToMemory.test.cpp
+                dereference.test.cpp
                 element_type.test.cpp
                 iterator.test.cpp
-                iterator_category.test.cpp
-                slurpFileToMemory.test.cpp
-                utility.test.cpp )
+                utility.test.cpp
+                iterator_category.test.cpp )
 target_compile_options( header-utilities.test PRIVATE ${${PREFIX}_common_flags}
 $<$<BOOL:${strict}>:${${PREFIX}_strict_flags}>$<$<CONFIG:DEBUG>:
 ${${PREFIX}_DEBUG_flags}

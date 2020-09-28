@@ -8,21 +8,10 @@
 
 #include "Log.hpp"
 
+#include "header-utilities/void_t.hpp"
+
 namespace njoy{
 namespace utility{
-
-/**
- * @brief
- * A alias template used for as a template type parameter to enable SFINAE
- *
- * @details
- * The void_t template is useful for implementing the so-called detection
- * idiom to provide rudimentary compile-time reflection in C++. See the
- * is_iterator template later in this library for a simple executable example,
- * of the use of this template in pratice.
- */
-template< class... >
-using void_t = void;
 
 /** @brief An alias to a parameter type's nested element_type alias */
 template< typename T >

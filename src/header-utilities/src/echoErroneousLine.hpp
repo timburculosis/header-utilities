@@ -7,7 +7,7 @@
 #include <string>
 
 // other includes
-#include "Log"
+#include "Log.hpp"
 
 namespace njoy {
 namespace utility {

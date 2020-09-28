@@ -11,10 +11,13 @@
 #include "header-utilities/Require.hpp"
 #include "header-utilities/value_t.hpp"
 
+// copy and dereference functions
 #include "header-utilities/dereference.hpp"
 #include "header-utilities/copy.hpp"
 
+// search algorithms
 #include "header-utilities/exponentialSearch.hpp"
 
+// other functions
 #include "header-utilities/echoErroneousLine.hpp"
 #include "header-utilities/slurpFileToMemory.hpp"

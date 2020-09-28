@@ -589,6 +589,7 @@
   },
   "header files": [
     "src/header-utilities.hpp",
+    "src/header-utilities/element_type.hpp",
     "src/header-utilities/value_t.hpp",
     "src/header-utilities/is_shared_ptr.hpp",
     "src/header-utilities/is_container.hpp",
@@ -597,10 +598,13 @@
     "src/header-utilities/is_unique_ptr.hpp",
     "src/header-utilities/slurpFileToMemory.hpp",
     "src/header-utilities/echoErroneousLine.hpp",
+    "src/header-utilities/void_t.hpp",
+    "src/header-utilities/iterator_category.hpp",
+    "src/header-utilities/dereference.hpp",
     "src/header-utilities/copy.hpp",
     "src/header-utilities/is_iterator.hpp",
-    "src/header-utilities/is_range.hpp",
-    "src/header-utilities/src/dereference.hpp"
+    "src/header-utilities/iterator.hpp",
+    "src/header-utilities/is_range.hpp"
   ],
   "ignore pattern": "$^",
   "implementation files": [],

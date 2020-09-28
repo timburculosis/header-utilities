@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "catch.hpp"
-#include "header-utilities.hpp"
+#include "header-utilities/is_shared_ptr.hpp"
 
 using namespace njoy::utility;
 

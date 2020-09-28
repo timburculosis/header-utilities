@@ -24,18 +24,6 @@ namespace utility{
 template< class... >
 using void_t = void;
 
-/**
- * @brief A generic function to call to a parameter types copy ctor
- *
- * @details
- * This function is convenient in conjunction with the idiom of always accepting
- * sink arguments by r-value reference (used throughout NJOY21 libraries). When
- * passing an l-value to such a function, the user can opt to either explicitly
- * move (using std::move) or explicitly copy (using utility::copy) the l-value.
- */
-template< typename T >
-T copy( const T& t ){ return t; }
-
 /** @brief An alias to a parameter type's nested element_type alias */
 template< typename T >
 using element_type = typename std::decay_t<T>::element_type;
@@ -69,4 +57,5 @@ using iterator = typename std::decay_t<T>::iterator;
 
 #endif
 
-#include "header-utilities/src/echoErroneousLine.hpp"
+#include "header-utilities/copy.hpp"
+#include "header-utilities/echoErroneousLine.hpp"

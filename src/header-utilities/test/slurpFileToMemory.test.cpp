@@ -1,6 +1,6 @@
 #include "catch.hpp"
 
-#include "header-utilities.hpp"
+#include "header-utilities/slurpFileToMemory.hpp"
 
 extern int testNumber;
 

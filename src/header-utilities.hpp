@@ -50,7 +50,6 @@ using iterator = typename std::decay_t<T>::iterator;
 #include "header-utilities/value_t.hpp"
 #include "header-utilities/exponentialSearch.hpp"
 #include "header-utilities/src/dereference.hpp"
-#include "header-utilities/src/slurpFileToMemory.hpp"
 
 }
 }
@@ -59,3 +58,4 @@ using iterator = typename std::decay_t<T>::iterator;
 
 #include "header-utilities/copy.hpp"
 #include "header-utilities/echoErroneousLine.hpp"
+#include "header-utilities/slurpFileToMemory.hpp"

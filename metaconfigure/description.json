@@ -595,10 +595,11 @@
     "src/header-utilities/exponentialSearch.hpp",
     "src/header-utilities/Require.hpp",
     "src/header-utilities/is_unique_ptr.hpp",
+    "src/header-utilities/slurpFileToMemory.hpp",
+    "src/header-utilities/echoErroneousLine.hpp",
+    "src/header-utilities/copy.hpp",
     "src/header-utilities/is_iterator.hpp",
     "src/header-utilities/is_range.hpp",
-    "src/header-utilities/src/slurpFileToMemory.hpp",
-    "src/header-utilities/src/echoErroneousLine.hpp",
     "src/header-utilities/src/dereference.hpp"
   ],
   "ignore pattern": "$^",

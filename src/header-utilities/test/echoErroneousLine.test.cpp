@@ -1,7 +1,7 @@
 #include <sstream>
 
 #include "catch.hpp"
-#include "header-utilities.hpp"
+#include "header-utilities/echoErroneousLine.hpp"
 
 std::stringstream ss;
 

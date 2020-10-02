@@ -3,7 +3,7 @@
 #define CATCH_CONFIG_MAIN
 
 #include "catch.hpp"
-#include "header-utilities.hpp"
+#include "header-utilities/exponentialSearch.hpp"
 
 using namespace njoy::utility;
 
@@ -17,12 +17,12 @@ SCENARIO("Exponential Search implementation"){
     while( --j ){ instance.push_back( distribution( generator ) ); }
     auto value = instance.front();
     std::sort( instance.begin(), instance.end() );
-    
+
     THEN("the search implementation will match std::lower_bound"){
       REQUIRE( std::lower_bound( instance.begin(), instance.end(), value )
 	       == exponentialSearch( instance.begin(), instance.end(), value ) );
     }
-    
+
     THEN("the search implementation return end when a match is not found"){
       REQUIRE( instance.end()
 	       == exponentialSearch( instance.begin(), instance.end(), 1001 ) );

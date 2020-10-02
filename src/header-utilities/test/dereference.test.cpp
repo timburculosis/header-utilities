@@ -1,5 +1,5 @@
 #include "catch.hpp"
-#include "header-utilities.hpp"
+#include "header-utilities/dereference.hpp"
 
 using namespace njoy::utility;
 

@@ -79,7 +79,7 @@ add_library( njoy::header-utilities ALIAS header-utilities )
 target_include_directories( header-utilities INTERFACE ${prefix} )
 
 target_link_libraries( header-utilities
-    INTERFACE Log
+    INTERFACE njoy::Log
     )
 
 
@@ -115,9 +115,11 @@ if(header-utilities_installation)
       DESTINATION share/cmake/header-utilities
     )
 
+    string(TOLOWER header-utilities lowercasePackageName)
+
     configure_package_config_file(
-      ${CMAKE_CURRENT_SOURCE_DIR}/cmake/header-utilities-config.cmake.in
-      ${CMAKE_BINARY_DIR}/header-utilities-config.cmake
+      ${CMAKE_CURRENT_SOURCE_DIR}/cmake/${lowercasePackageName}-config.cmake.in
+      ${CMAKE_BINARY_DIR}/${lowercasePackageName}-config.cmake
       INSTALL_DESTINATION share/cmake/header-utilities
     )
 
@@ -128,7 +130,7 @@ if(header-utilities_installation)
     )
 
     install(FILES
-      "${PROJECT_BINARY_DIR}/header-utilities-config.cmake"
+      "${PROJECT_BINARY_DIR}/${lowercasePackageName}-config.cmake"
       DESTINATION share/cmake/header-utilities
     )
 

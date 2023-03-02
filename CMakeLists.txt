@@ -2,8 +2,14 @@
 # Preamble
 ########################################################################
 
-cmake_minimum_required( VERSION 3.14 )
+set(subproject OFF)
+if(DEFINED PROJECT_NAME)
+  set(subproject ON)
+endif()
+
+cmake_minimum_required( VERSION 3.24 )
 project( header-utilities LANGUAGES CXX )
+
 
 
 ########################################################################
@@ -13,8 +19,15 @@ project( header-utilities LANGUAGES CXX )
 set( CMAKE_CXX_STANDARD 17 )
 set( CMAKE_CXX_STANDARD_REQUIRED YES )
 
-option( header-utilities_unit_tests
+include(CTest)
+include(CMakeDependentOption)
+
+cmake_dependent_option( header-utilities_unit_tests
     "Compile the header-utilities unit tests and integrate with ctest" ON
+    BUILD_TESTING AND NOT ${subproject}
+)
+option( header-utilities_installation
+    "Install header-utilities" ON
     )
 option( strict_compile
     "Treat all warnings as errors." ON
@@ -51,14 +64,24 @@ endif()
 ########################################################################
 # Project targets
 ########################################################################
+include(GNUInstallDirs)
+
+string( CONCAT prefix
+  "$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/src>"
+  "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
+)
 
 add_library( header-utilities INTERFACE
     )
-target_include_directories( header-utilities INTERFACE src/ )
+
+add_library( njoy::header-utilities ALIAS header-utilities )
+
+target_include_directories( header-utilities INTERFACE ${prefix} )
+
 target_link_libraries( header-utilities
-    INTERFACE catch-adapter
     INTERFACE Log
     )
+
 
 
 #######################################################################
@@ -68,8 +91,51 @@ target_link_libraries( header-utilities
 if( CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR )
 
     # unit testing
-    if( header-utilities_unit_tests )
+    if( ${header-utilities_unit_tests} )
         include( cmake/unit_testing.cmake )
     endif()
 
 endif()
+#######################################################################
+# Installation 
+#######################################################################
+
+if(header-utilities_installation)
+    include(CMakePackageConfigHelpers)
+
+    install(TARGETS header-utilities EXPORT header-utilities-targets
+      ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+      LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+      RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
+    )
+
+    install(EXPORT header-utilities-targets
+      FILE "header-utilities-targets.cmake"
+      NAMESPACE njoy::
+      DESTINATION share/cmake/header-utilities
+    )
+
+    configure_package_config_file(
+      ${CMAKE_CURRENT_SOURCE_DIR}/cmake/header-utilities-config.cmake.in
+      ${CMAKE_BINARY_DIR}/header-utilities-config.cmake
+      INSTALL_DESTINATION share/cmake/header-utilities
+    )
+
+    install(DIRECTORY src/
+      DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+      FILES_MATCHING PATTERN "*.hpp"
+      PATTERN "*test*" EXCLUDE
+    )
+
+    install(FILES
+      "${PROJECT_BINARY_DIR}/header-utilities-config.cmake"
+      DESTINATION share/cmake/header-utilities
+    )
+
+    if(NOT subproject)
+      set(CPACK_PACKAGE_VENDOR "Los Alamos National Laboratory")
+      set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
+      include(CPack)
+    endif()
+endif()
+

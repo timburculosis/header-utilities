@@ -1,0 +1,3 @@
+include(CMakeFindDependencyMacro)
+
+if (NOT TARGET Log)

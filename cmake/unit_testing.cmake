@@ -3,8 +3,11 @@
 #######################################################################
 
 message( STATUS "Adding header-utilities unit testing" )
-enable_testing()
 
+add_library( header-utilities_testing INTERFACE )
+target_link_libraries( header-utilities_testing INTERFACE header-utilities )
+
+target_link_libraries(header-utilities_testing INTERFACE catch-adapter)
 
 #######################################################################
 # Unit testing directories

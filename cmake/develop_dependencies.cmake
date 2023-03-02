@@ -1,18 +1,19 @@
-cmake_minimum_required( VERSION 3.14 )
-include( FetchContent )
+cmake_minimum_required( VERSION 3.24 )
+list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/.cmake)
+include( shacl_FetchContent )
 
 #######################################################################
 # Declare project dependencies
 #######################################################################
 
-FetchContent_Declare( catch-adapter
-    GIT_REPOSITORY  https://github.com/njoy/catch-adapter
+shacl_FetchContent_Declare( catch-adapter
+    GIT_REPOSITORY  ../../njoy/catch-adapter
     GIT_TAG         origin/master
     GIT_SHALLOW     TRUE
     )
 
-FetchContent_Declare( Log
-    GIT_REPOSITORY  https://github.com/njoy/Log
+shacl_FetchContent_Declare( Log
+    GIT_REPOSITORY  ../../njoy/Log
     GIT_TAG         origin/master
     GIT_SHALLOW     TRUE
     )
@@ -21,7 +22,11 @@ FetchContent_Declare( Log
 # Load dependencies
 #######################################################################
 
-FetchContent_MakeAvailable(
-    catch-adapter
+shacl_FetchContent_MakeAvailable(
     Log
     )
+
+if (${header-utilities_unit_tests})
+    shacl_FetchContent_MakeAvailable(catch-adapter)
+endif()
+

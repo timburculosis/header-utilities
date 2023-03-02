@@ -1,31 +1,30 @@
-cmake_minimum_required( VERSION 3.14 )
-include( FetchContent )
+cmake_minimum_required( VERSION 3.24 )
+list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/.cmake)
+include( shacl_FetchContent )
 
 #######################################################################
 # Declare project dependencies
 #######################################################################
 
-FetchContent_Declare( catch-adapter
-    GIT_REPOSITORY  https://github.com/njoy/catch-adapter
+shacl_FetchContent_Declare( catch-adapter
+    GIT_REPOSITORY  ../../njoy/catch-adapter
     GIT_TAG         fb84b82ebf7a4789aa43cea560680cf745c6ee4f
     )
 
-FetchContent_Declare( Log
-    GIT_REPOSITORY  https://github.com/njoy/Log
-    GIT_TAG         52962b7796afe37ef1d8f7edb4bf9ecb1b868d15
-    )
-
-FetchContent_Declare( spdlog
-    GIT_REPOSITORY  https://github.com/gabime/spdlog
-    GIT_TAG         a51b4856377a71f81b6d74b9af459305c4c644f8
+shacl_FetchContent_Declare( Log
+    GIT_REPOSITORY  ../../njoy/Log
+    GIT_TAG         9f70f9428219dc245b72042a284dac18e33bc946
     )
 
 #######################################################################
 # Load dependencies
 #######################################################################
 
-FetchContent_MakeAvailable(
-    catch-adapter
+shacl_FetchContent_MakeAvailable(
     Log
-    spdlog
     )
+
+if (${header-utilities_unit_tests})
+    shacl_FetchContent_MakeAvailable(catch-adapter)
+endif()
+

@@ -119,7 +119,7 @@ if(header-utilities_installation)
 
     configure_package_config_file(
       ${CMAKE_CURRENT_SOURCE_DIR}/cmake/${lowercasePackageName}-config.cmake.in
-      ${CMAKE_BINARY_DIR}/${lowercasePackageName}-config.cmake
+      ${PROJECT_BINARY_DIR}/${lowercasePackageName}-config.cmake
       INSTALL_DESTINATION share/cmake/header-utilities
     )
 
